@@ -1,4 +1,4 @@
-# Full-Stack ToDo Application with AI Chatbot (Phase 3)
+# Full-Stack ToDo Application with Chatbot (Phase 3)
 
 ## Description
 This is a full-stack ToDo application designed to demonstrate modern web development practices with added AI integration. It features a robust backend built with FastAPI and a dynamic frontend powered by Next.js. Users can manage their tasks efficiently and interact with an AI chatbot for task management assistance, providing a seamless and intuitive experience.
@@ -74,7 +74,7 @@ DATABASE_URL="postgresql://user:password@host:port/database_name"
 SECRET_KEY="your-super-secret-key"
 ALGORITHM="HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES=30
-OPENAI_API_KEY="your-openai-api-key"
+GEMINI_API_KEY="your-gemini-api-key"
 ```
 *   Replace `user`, `password`, `host`, `port`, and `database_name` with your PostgreSQL database credentials.
 *   Generate a strong `SECRET_KEY` for JWT.
