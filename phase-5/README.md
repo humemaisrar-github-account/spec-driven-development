@@ -1,7 +1,7 @@
-# Full-Stack ToDo Application
+# Full-Stack ToDo Application with Advanced Features and Dapr Integration (Phase 5)
 
 ## Description
-This is a full-stack ToDo application designed to demonstrate modern web development practices. It features a robust backend built with FastAPI and a dynamic frontend powered by Next.js. Users can manage their tasks efficiently, providing a seamless and intuitive experience.
+This is a full-stack ToDo application with advanced features and distributed application runtime (Dapr) integration. It demonstrates modern web development practices with added AI integration, containerization, and advanced task management capabilities. The application features a robust backend built with FastAPI and a dynamic frontend powered by Next.js. Users can manage their tasks efficiently, create recurring tasks, and interact with an AI chatbot for task management assistance, providing a seamless and intuitive experience. The application is containerized using Docker for easy deployment and uses Dapr for microservices communication.
 
 ## Technologies Used
 
@@ -20,6 +20,28 @@ This is a full-stack ToDo application designed to demonstrate modern web develop
 *   **python-dotenv:** For managing environment variables.
 *   **python-jose:** For JSON Web Token (JWT) handling.
 *   **passlib:** For password hashing.
+*   **better-auth:** Authentication library for secure user management.
+*   **OpenAI API:** For AI-powered chatbot functionality.
+*   **Dapr:** Distributed Application Runtime for microservices.
+*   **Kafka:** For event streaming and messaging.
+*   **AsyncPG:** Async PostgreSQL driver for Python.
+
+### Containerization & Deployment
+*   **Docker:** For containerizing the application
+*   **Helm:** For Kubernetes package management
+*   **Kubernetes:** For container orchestration
+
+## Key Features
+*   User authentication and authorization
+*   Full CRUD operations for todo tasks
+*   Interactive AI chatbot for task management
+*   Recurring tasks functionality
+*   Event-driven architecture with Dapr
+*   Microservices communication with Kafka
+*   Responsive UI design
+*   Secure session management
+*   Containerized deployment with Docker
+*   Kubernetes-ready with Helm charts
 
 ## Setup Instructions
 
@@ -34,12 +56,15 @@ Before you begin, ensure you have the following installed:
 *   **Python 3.9+**
 *   **pip** (comes with Python)
 *   **PostgreSQL** database server running
+*   **Docker** (for containerization and Dapr)
+*   **Dapr CLI:** For managing Dapr sidecars
+*   **Kafka:** For event streaming (can be run in Docker)
 
 ### 1. Clone the Repository
 
 ```bash
 git clone <repository_url>
-cd hack-phase-3 # or your project root directory
+cd hackathon-2phase5 # or your project root directory
 ```
 
 ### 2. Backend Setup
@@ -62,9 +87,14 @@ DATABASE_URL="postgresql://user:password@host:port/database_name"
 SECRET_KEY="your-super-secret-key"
 ALGORITHM="HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES=30
+OPENAI_API_KEY="your-openai-api-key"
+DAPR_HTTP_PORT=3500
+DAPR_GRPC_PORT=50001
 ```
 *   Replace `user`, `password`, `host`, `port`, and `database_name` with your PostgreSQL database credentials.
 *   Generate a strong `SECRET_KEY` for JWT.
+*   Add your OpenAI API key for chatbot functionality.
+*   Configure Dapr ports for microservices communication.
 
 ### 3. Frontend Setup
 
@@ -88,7 +118,13 @@ NEXT_PUBLIC_API_URL="http://localhost:8000" # Or wherever your backend is runnin
 
 Once both the backend and frontend are set up, you can start them independently.
 
-### 1. Start the Backend Server
+### 1. Start Dapr Sidecar (if using Dapr)
+
+```bash
+dapr run --app-id todo-app --app-port 8000 --dapr-http-port 3500 --dapr-grpc-port 50001
+```
+
+### 2. Start the Backend Server
 
 ```bash
 cd backend
@@ -97,7 +133,7 @@ uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 The backend will be accessible at `http://localhost:8000`.
 
-### 2. Start the Frontend Development Server
+### 3. Start the Frontend Development Server
 
 ```bash
 cd frontend
@@ -117,12 +153,15 @@ Before you begin, ensure you have the following installed:
 
 *   **Minikube:** A tool that runs a single-node Kubernetes cluster locally.
 *   **Helm:** The package manager for Kubernetes.
+*   **Dapr:** For distributed application runtime in Kubernetes.
 
-### 1. Start Minikube
+### 1. Start Minikube and Install Dapr
 
-Ensure your Minikube cluster is running:
+Ensure your Minikube cluster is running and install Dapr:
 ```bash
 minikube start
+kubectl apply -f https://raw.githubusercontent.com/dapr/dapr/release-1.12/cmd/install/resources/dapr-kubernetes-init.yaml
+kubectl apply -f https://raw.githubusercontent.com/dapr/dapr/release-1.12/cmd/install/resources/dapr-kubernetes.yaml
 ```
 
 ### 2. Build Docker Images
@@ -204,27 +243,50 @@ To access your application, you need to configure your local machine to resolve 
 
 After updating your hosts file, you should be able to access your frontend application by navigating to `http://todoflow.local` in your web browser. The backend API will be available at `http://todoflow.local/api`.
 
+## Docker Deployment
+
+To run the application using Docker:
+
+```bash
+# Build the Docker images
+docker build -t todo-backend ./backend
+docker build -t todo-frontend ./frontend
+
+# Run the containers
+docker run -d -p 8000:8000 --env-file ./backend/.env todo-backend
+docker run -d -p 3000:3000 todo-frontend
+```
+
 ## Project Structure Overview
 
 ```
-hack-phase-3/
+hackathon-2phase5/
 ├── backend/                  # FastAPI backend application
 │   ├── src/                  # Backend source code
 │   │   ├── api/              # API routes and middleware
+│   │   │   ├── routes/       # Individual route files (auth, todos, chat, tasks, recurring-tasks)
 │   │   ├── database/         # Database connection and tables
 │   │   ├── models/           # SQLModel models
+│   │   ├── mcp/              # MCP server and tools
 │   │   └── services/         # Business logic and services
 │   ├── requirements.txt      # Python dependencies
+│   ├── Dockerfile            # Docker configuration for backend
 │   └── ...
 ├── frontend/                 # Next.js frontend application
 │   ├── src/                  # Frontend source code
 │   │   ├── components/       # Reusable UI components
+│   │   │   ├── chat/         # Chat interface components
+│   │   │   ├── common/       # Common UI elements
+│   │   │   └── layout/       # Layout components
 │   │   ├── hooks/            # React hooks
 │   │   ├── pages/            # Next.js pages (routes)
 │   │   ├── services/         # API interaction services
 │   │   └── styles/           # Global styles
 │   ├── package.json          # Node.js dependencies
+│   ├── Dockerfile            # Docker configuration for frontend
 │   └── ...
+├── recurring-task-service/   # Separate service for handling recurring tasks
+├── notification-service/     # Service for handling notifications
 ├── todoflow-chatbot/         # Helm chart for Kubernetes deployment
 │   ├── Chart.yaml            # Defines the chart
 │   ├── values.yaml           # Default values for the chart
@@ -232,8 +294,7 @@ hack-phase-3/
 │       ├── deployment.yaml
 │       ├── service.yaml
 │       └── ingress.yaml
-├── README.md                 # Project documentation
-└── ...
+└── README.md                 # Project documentation
 ```
 
 ## Testing
@@ -254,3 +315,11 @@ Frontend tests are typically run with a command like:
 cd frontend
 npm test
 ```
+
+## Advanced Features
+The application includes several advanced features:
+*   Creating new tasks via natural language through the AI chatbot
+*   Setting up recurring tasks with customizable intervals
+*   Event-driven notifications
+*   Dapr-based microservices communication
+*   Kafka-based event streaming

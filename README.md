@@ -14,10 +14,11 @@ This repository contains a comprehensive collection of development phases showca
 - Technologies: JavaScript/Node.js, Next.js, FastAPI, PostgreSQL
 - Features: Todo application with user authentication and CRUD operations
 
-### Phase 3: Enhanced Web Application
+### Phase 3: Enhanced Web Application with AI Chatbot
 - Focus: Advanced features and AI integration
-- Technologies: JavaScript/Node.js, Next.js, FastAPI, PostgreSQL
+- Technologies: JavaScript/Node.js, Next.js, FastAPI, PostgreSQL, OpenAI API
 - Features: Chatbot integration, enhanced UI/UX, improved authentication
+- Live Application: [https://hackathon-2phase3.vercel.app/](https://hackathon-2phase3.vercel.app/)
 
 ### Phase 4: Containerized Deployment
 - Focus: Docker containerization and deployment strategies
@@ -26,8 +27,8 @@ This repository contains a comprehensive collection of development phases showca
 
 ### Phase 5: Advanced Features & Dapr Integration
 - Focus: Advanced task management with Dapr (Distributed Application Runtime)
-- Technologies: Python, Dapr, PostgreSQL, Docker
-- Features: Recurring tasks, event-driven architecture, advanced scheduling
+- Technologies: Python, Dapr, PostgreSQL, Docker, Kafka
+- Features: Recurring tasks, event-driven architecture, advanced scheduling, microservices
 
 ## Getting Started
 

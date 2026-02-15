@@ -1,7 +1,10 @@
-# Full-Stack ToDo Application
+# Full-Stack ToDo Application with AI Chatbot (Phase 3)
 
 ## Description
-This is a full-stack ToDo application designed to demonstrate modern web development practices. It features a robust backend built with FastAPI and a dynamic frontend powered by Next.js. Users can manage their tasks efficiently, providing a seamless and intuitive experience.
+This is a full-stack ToDo application designed to demonstrate modern web development practices with added AI integration. It features a robust backend built with FastAPI and a dynamic frontend powered by Next.js. Users can manage their tasks efficiently and interact with an AI chatbot for task management assistance, providing a seamless and intuitive experience.
+
+## Live Application
+You can access the deployed application at: [https://hackathon-2phase3.vercel.app/](https://hackathon-2phase3.vercel.app/)
 
 ## Technologies Used
 
@@ -20,6 +23,15 @@ This is a full-stack ToDo application designed to demonstrate modern web develop
 *   **python-dotenv:** For managing environment variables.
 *   **python-jose:** For JSON Web Token (JWT) handling.
 *   **passlib:** For password hashing.
+*   **better-auth:** Authentication library for secure user management.
+*   **OpenAI API:** For AI-powered chatbot functionality.
+
+## Key Features
+*   User authentication and authorization
+*   Full CRUD operations for todo tasks
+*   Interactive AI chatbot for task management
+*   Responsive UI design
+*   Secure session management
 
 ## Setup Instructions
 
@@ -39,7 +51,7 @@ Before you begin, ensure you have the following installed:
 
 ```bash
 git clone <repository_url>
-cd hack-phase-3 # or your project root directory
+cd hackathon-2phase3 # or your project root directory
 ```
 
 ### 2. Backend Setup
@@ -62,9 +74,11 @@ DATABASE_URL="postgresql://user:password@host:port/database_name"
 SECRET_KEY="your-super-secret-key"
 ALGORITHM="HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES=30
+OPENAI_API_KEY="your-openai-api-key"
 ```
 *   Replace `user`, `password`, `host`, `port`, and `database_name` with your PostgreSQL database credentials.
 *   Generate a strong `SECRET_KEY` for JWT.
+*   Add your OpenAI API key for chatbot functionality.
 
 ### 3. Frontend Setup
 
@@ -110,18 +124,23 @@ Open your web browser and navigate to `http://localhost:3000` to access the ToDo
 ## Project Structure Overview
 
 ```
-hack-phase-3/
+hackathon-2phase3/
 ├── backend/                  # FastAPI backend application
 │   ├── src/                  # Backend source code
 │   │   ├── api/              # API routes and middleware
+│   │   │   ├── routes/       # Individual route files (auth, todos, chat)
 │   │   ├── database/         # Database connection and tables
 │   │   ├── models/           # SQLModel models
+│   │   ├── mcp/              # MCP server and tools
 │   │   └── services/         # Business logic and services
 │   ├── requirements.txt      # Python dependencies
 │   └── ...
 ├── frontend/                 # Next.js frontend application
 │   ├── src/                  # Frontend source code
 │   │   ├── components/       # Reusable UI components
+│   │   │   ├── chat/         # Chat interface components
+│   │   │   ├── common/       # Common UI elements
+│   │   │   └── layout/       # Layout components
 │   │   ├── hooks/            # React hooks
 │   │   ├── pages/            # Next.js pages (routes)
 │   │   ├── services/         # API interaction services
@@ -149,3 +168,10 @@ Frontend tests are typically run with a command like:
 cd frontend
 npm test
 ```
+
+## AI Chatbot Integration
+The application includes an AI chatbot that can assist with:
+*   Creating new tasks via natural language
+*   Updating existing tasks
+*   Checking task status
+*   Providing suggestions for task management
