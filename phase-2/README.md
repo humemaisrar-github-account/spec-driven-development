@@ -1,78 +1,106 @@
-# Todo Web Application - Phase II Implementation
+# Todo Web Application – Phase II Implementation
 
-This is a full-stack todo web application implementing the Phase II specifications with Next.js frontend, FastAPI backend, BetterAuth authentication, and PostgreSQL database.
+This is a full-stack Todo web application implementing the Phase II specifications using modern web technologies with secure authentication, database integration, and RESTful API handling.
 
-## Tech Stack
+## 🌐 Live Demo
+
+👉 https://hackathon2-phase2-two.vercel.app/
+
+---
+
+## 🛠 Tech Stack
 
 - **Frontend**: Next.js 14+, TypeScript, Tailwind CSS
 - **Backend**: Python FastAPI
 - **ORM**: SQLModel
 - **Database**: Neon Serverless PostgreSQL
-- **Authentication**: Better Auth with JWT tokens
+- **Authentication**: Better Auth with JWT Tokens
 
-## Features Implemented
+---
 
-1. **Authentication System**
-   - Email/password login without email verification
-   - JWT token issuance on login
-   - Frontend attaches JWT to all API requests in `Authorization: Bearer <token>`
-   - Backend verifies JWT and extracts `user_id`
-   - All endpoints require valid JWT; otherwise return 401
+## ✨ Features Implemented
 
-2. **Todo API Endpoints** (FastAPI)
-   - GET `/api/{user_id}/tasks` → List all tasks for that user
-   - POST `/api/{user_id}/tasks` → Create a new task
-   - GET `/api/{user_id}/tasks/{id}` → Get a specific task
-   - PUT `/api/{user_id}/tasks/{id}` → Update a task
-   - DELETE `/api/{user_id}/tasks/{id}` → Delete a task
-   - PATCH `/api/{user_id}/tasks/{id}/complete` → Toggle completion status
-   - All responses are valid JSON
-   - Filter all tasks by authenticated `user_id`
+### 🔐 Authentication System
+- Email/password authentication (no email verification)
+- JWT token issued on successful login
+- Frontend sends JWT with every request using  
+  `Authorization: Bearer <token>`
+- Backend verifies JWT and extracts `user_id`
+- All protected endpoints return `401 Unauthorized` if token is invalid
 
-3. **Database Schema**
-   - `users` table managed by Better Auth
-   - `tasks` table with required fields
-   - Indexed `tasks.user_id` and `tasks.completed`
+---
 
-4. **Frontend Components**
-   - Reusable API client in `/lib/api.ts`
-   - Example fetch calls for all required operations
+### 📌 Todo API Endpoints (FastAPI)
 
-## Environment Variables
+- `GET /api/{user_id}/tasks` → List all tasks
+- `POST /api/{user_id}/tasks` → Create a new task
+- `GET /api/{user_id}/tasks/{id}` → Retrieve a specific task
+- `PUT /api/{user_id}/tasks/{id}` → Update a task
+- `DELETE /api/{user_id}/tasks/{id}` → Delete a task
+- `PATCH /api/{user_id}/tasks/{id}/complete` → Toggle task completion
 
-### Frontend (.env.local)
+✅ All responses are valid JSON  
+✅ Tasks are strictly filtered by authenticated `user_id`
+
+---
+
+### 🗄 Database Schema
+
+- `users` table managed by Better Auth
+- `tasks` table with required fields
+- Indexed columns:
+  - `tasks.user_id`
+  - `tasks.completed`
+
+---
+
+### 🎨 Frontend Architecture
+
+- Reusable API client located at `/lib/api.ts`
+- Centralized request handling for:
+  - Authentication
+  - Task CRUD operations
+  - Task completion toggle
+
+---
+
+## ⚙️ Environment Variables
+
+### Frontend (`.env.local`)
 ```env
 NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000
 NEXT_PUBLIC_BETTER_AUTH_URL=http://localhost:3000
 NEXT_PUBLIC_BETTER_AUTH_SECRET=your_better_auth_secret_here
 ```
-
 ### Backend (.env)
-```env
 DATABASE_URL=your_postgresql_connection_string
 BETTER_AUTH_SECRET=your_better_auth_secret_here
 SECRET_KEY=your_jwt_secret
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=30
-```
 
-## Running the Application
+## 🚀 Running the Application
 
 ### Backend Setup
-1. Navigate to the backend directory: `cd backend`
-2. Install dependencies: `pip install -r requirements.txt`
-3. Set up environment variables
-4. Run the server: `uvicorn src.main:app --reload --port 8000`
+```bash
+cd backend
+pip install -r requirements.txt
+uvicorn src.main:app --reload --port 8000
+```
+## Frontend Setup
+cd frontend
+npm install
+npm run dev
 
-### Frontend Setup
-1. Navigate to the frontend directory: `cd frontend`
-2. Install dependencies: `npm install`
-3. Set up environment variables
-4. Run the development server: `npm run dev`
+### 📦 API Client Usage
 
-## API Client Usage
+Reusable API client is available at:
 
-The application includes a reusable API client in `frontend/lib/api.ts` with functions for:
+## frontend/lib/api.ts
+
+
+#### Available Functions
+
 - `signUp(email, password)`
 - `signIn(email, password)`
 - `getTasks(userId)`
@@ -80,3 +108,17 @@ The application includes a reusable API client in `frontend/lib/api.ts` with fun
 - `updateTask(userId, id, title, description)`
 - `deleteTask(userId, id)`
 - `toggleComplete(userId, id)`
+
+---
+
+### 📌 Notes
+
+This project was built following **production-grade best practices**, with a focus on:
+
+- Clean architecture
+- Secure authentication
+- Scalable backend design
+- Modern frontend stack
+
+
+
